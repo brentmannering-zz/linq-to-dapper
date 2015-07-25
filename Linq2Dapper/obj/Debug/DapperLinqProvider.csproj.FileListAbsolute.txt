@@ -1,0 +1,10 @@
+C:\Projects\Linq\DapperLinqProvider\DapperLinqProvider\bin\Debug\Dapper.Contrib.Linq.dll
+C:\Projects\Linq\DapperLinqProvider\DapperLinqProvider\bin\Debug\Dapper.Contrib.Linq.pdb
+C:\Projects\Linq\DapperLinqProvider\DapperLinqProvider\bin\Debug\Dapper.dll
+C:\Projects\Linq\DapperLinqProvider\DapperLinqProvider\bin\Debug\Model.dll
+C:\Projects\Linq\DapperLinqProvider\DapperLinqProvider\bin\Debug\Model.pdb
+C:\Projects\Linq\DapperLinqProvider\DapperLinqProvider\bin\Debug\Dapper.pdb
+C:\Projects\Linq\DapperLinqProvider\DapperLinqProvider\bin\Debug\Dapper.xml
+C:\Projects\Linq\DapperLinqProvider\DapperLinqProvider\obj\Debug\DapperLinqProvider.csprojResolveAssemblyReference.cache
+C:\Projects\Linq\DapperLinqProvider\DapperLinqProvider\obj\Debug\Dapper.Contrib.Linq.dll
+C:\Projects\Linq\DapperLinqProvider\DapperLinqProvider\obj\Debug\Dapper.Contrib.Linq.pdb
