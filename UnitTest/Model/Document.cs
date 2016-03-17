@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace UnitTest.Model
 {
-    [Table("Field")]
-    public class Field
+    [Table("Document")]
+    public class Document
     {
         [Key]
+        public int DocumentId { get; set; }
         public int FieldId { get; set; }
-        public int DataTypeId { get; set; }
         public string Name { get; set; }
+        public DateTime? Created { get; set; } 
     }
 }

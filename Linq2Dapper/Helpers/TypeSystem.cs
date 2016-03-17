@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Dapper.Contrib.Linq2Dapper.Helpers
 {
@@ -42,41 +41,6 @@ namespace Dapper.Contrib.Linq2Dapper.Helpers
             {
                 return FindIEnumerable(seqType.BaseType);
             }
-            return null;
-        }
-
-        internal static Type GetSequenceType(Type elementType)
-        {
-            return typeof (IEnumerable<>).MakeGenericType(elementType);
-        }
-
-        internal static bool IsNullableType(Type type)
-        {
-            return type != null && type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>);
-        }
-
-        internal static bool IsNullAssignable(Type type)
-        {
-            return !type.IsValueType || IsNullableType(type);
-        }
-
-        internal static Type GetNonNullableType(Type type)
-        {
-            if (IsNullableType(type))
-            {
-                return type.GetGenericArguments()[0];
-            }
-            return type;
-        }
-
-        internal static Type GetMemberType(MemberInfo mi)
-        {
-            FieldInfo fi = mi as FieldInfo;
-            if (fi != null) return fi.FieldType;
-            PropertyInfo pi = mi as PropertyInfo;
-            if (pi != null) return pi.PropertyType;
-            EventInfo ei = mi as EventInfo;
-            if (ei != null) return ei.EventHandlerType;
             return null;
         }
     }

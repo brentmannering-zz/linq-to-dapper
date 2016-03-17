@@ -1,50 +1,92 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Dapper.Contrib.Linq2Dapper.Exceptions;
 
 namespace Dapper.Contrib.Linq2Dapper.Helpers
 {
+    internal class TableHelper
+    {
+        internal string Name { get; set; }
+        internal Dictionary<string, string> Columns { get; set; }
+        internal string Identifier { get; set; }
+    }
+
     internal static class CacheHelper
     {
-        private static readonly ConcurrentDictionary<Type, List<string>> _typePropertyList;
-        private static readonly ConcurrentDictionary<Type, string> _typeTableName;
+        internal static int Size {
+            get { return _typeList.Count; }
+        }
+
+        private static readonly ConcurrentDictionary<Type, TableHelper> _typeList;
 
         static CacheHelper()
         {
-            if (_typePropertyList == null)
-                _typePropertyList = new ConcurrentDictionary<Type, List<string>>();
-
-            if (_typeTableName == null)
-                _typeTableName = new ConcurrentDictionary<Type, string>();
+            if (_typeList == null)
+                _typeList = new ConcurrentDictionary<Type, TableHelper>();
         }
 
-        internal static bool TryAddPropertyList<T>(List<string> properties)
+        internal static bool HasCache<T>()
         {
-            return _typePropertyList.TryAdd(typeof(T), properties);
+            return HasCache(typeof (T));
         }
 
-        internal static List<string> TryGetPropertyList<T>()
+        internal static bool HasCache(Type type)
         {
-            List<string> propList;
-
-            if (!_typePropertyList.TryGetValue(typeof(T), out propList))
-                throw new Exception("Invalid type: " + typeof(T));
-
-            return propList;
+            TableHelper table;
+            return _typeList.TryGetValue(type, out table);
         }
 
-        internal static bool TryAddTableName<T>(string tableName)
+        internal static bool TryAddTable<T>(TableHelper table)
         {
-            return _typeTableName.TryAdd(typeof(T), tableName);
+            return TryAddTable(typeof(T), table);
+        }
+
+        internal static bool TryAddTable(Type type, TableHelper table)
+        {
+            return _typeList.TryAdd(type, table);
+        }
+
+        internal static TableHelper TryGetTable<T>()
+        {
+            return TryGetTable(typeof(T));
+        }
+
+        internal static TableHelper TryGetTable(Type type)
+        {
+            TableHelper table;
+            return !_typeList.TryGetValue(type, out table) ? new TableHelper() : table;
+        }
+
+        internal static string TryGetIdentifier<T>()
+        {
+            return TryGetIdentifier(typeof(T));
+        }
+
+        internal static string TryGetIdentifier(Type type)
+        {
+            return TryGetTable(type).Identifier;
+        }
+
+        internal static Dictionary<string, string> TryGetPropertyList<T>()
+        {
+            return TryGetPropertyList(typeof(T));
+        }
+
+        internal static Dictionary<string, string> TryGetPropertyList(Type type)
+        {
+            return TryGetTable(type).Columns;
         }
 
         internal static string TryGetTableName<T>()
         {
-            string tableName;
-            if (!_typeTableName.TryGetValue(typeof(T), out tableName))
-                throw new Exception("Invalid type: " + typeof(T));
-
-            return tableName;
+            return TryGetTableName(typeof(T));
         }
+
+        internal static string TryGetTableName(Type type)
+        {
+            return TryGetTable(type).Name;
+        }
+
     }
 }

@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linq2Dapper", "Linq2Dapper\Linq2Dapper.csproj", "{6790F728-CB22-44BE-972E-7287373720D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{B5525ED6-F8C8-4085-9C3B-72B2FC98BDDC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{54B29173-7E91-464E-B7FB-6DC1DE983050}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,8 +23,16 @@ Global
 		{6790F728-CB22-44BE-972E-7287373720D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6790F728-CB22-44BE-972E-7287373720D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6790F728-CB22-44BE-972E-7287373720D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5525ED6-F8C8-4085-9C3B-72B2FC98BDDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5525ED6-F8C8-4085-9C3B-72B2FC98BDDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5525ED6-F8C8-4085-9C3B-72B2FC98BDDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5525ED6-F8C8-4085-9C3B-72B2FC98BDDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C07C6E24-035C-499E-AE88-DF85E0432B2F} = {54B29173-7E91-464E-B7FB-6DC1DE983050}
+		{B5525ED6-F8C8-4085-9C3B-72B2FC98BDDC} = {54B29173-7E91-464E-B7FB-6DC1DE983050}
 	EndGlobalSection
 EndGlobal
