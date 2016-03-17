@@ -39,11 +39,22 @@
       <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
@@ -59,22 +70,34 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="EDMXComparison.cs" />
+    <Compile Include="Model\Context.cs" />
     <Compile Include="Model\DataType.cs" />
+    <Compile Include="Model\Document.cs" />
     <Compile Include="Model\Field.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Linq2DapperShould.cs" />
+    <Compile Include="EFComparison.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Database.sql" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{b5525ed6-f8c8-4085-9c3b-72b2fc98bddc}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Linq2Dapper\Linq2Dapper.csproj">
       <Project>{6790f728-cb22-44be-972e-7287373720d4}</Project>
       <Name>Linq2Dapper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

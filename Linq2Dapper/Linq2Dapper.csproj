@@ -48,10 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\InvalidCacheItemException.cs" />
     <Compile Include="Helpers\CacheHelper.cs" />
+    <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\Evaluator.cs" />
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Extensions\DapperExtensions.cs" />
+    <Compile Include="Helpers\QueryBuilderState.cs" />
+    <Compile Include="Helpers\SqlWriter.cs" />
     <Compile Include="QueryProvider.cs" />
     <Compile Include="Exceptions\InvalidQueryException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

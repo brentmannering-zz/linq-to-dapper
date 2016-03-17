@@ -56,8 +56,12 @@ namespace Dapper.Contrib.Linq2Dapper
         {
             try
             {
-                _qb.Visit(expression);
+                if (_connection.State != ConnectionState.Open) _connection.Open();
+
+                _qb.Evaluate(expression);
                 var data = _connection.Query<TData>(_qb.Sql, _qb.Parameters);
+
+
 
                 if (isEnumerable)
                     return data;
@@ -67,6 +71,10 @@ namespace Dapper.Contrib.Linq2Dapper
             catch (SqlException ex)
             {
                 throw new InvalidQueryException(ex.Message);
+            }
+            finally
+            {
+                _connection.Close();
             }
         }
 

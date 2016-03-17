@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper.Contrib.Linq2Dapper.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UnitTest.Model;
 
 namespace UnitTest
 {
@@ -17,9 +18,60 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>().ToList();
+                var results = cn.Query<DataType>().ToList();
                 Assert.AreEqual(5, results.Count);
             }
+        }
+
+        [TestMethod]
+        public void SelectAllRecords2()
+        {
+            var cntx = new DataContext(ConnectionString);
+
+            var results = cntx.DataTypes.Where(x => x.Name == "text").ToList();
+
+            Assert.AreEqual(1, results.Count);
+        }
+
+        [TestMethod]
+        public void SelectSpeedTest()
+        {
+            for (int i = 0; i < 500; i++)
+            {
+                using (var cn = new SqlConnection(ConnectionString))
+                {
+                    cn.Open();
+                    var results = cn.Query<DataType>().ToList();
+                    Assert.AreEqual(5, results.Count);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void JoinWhere()
+        {
+            var cntx = new DataContext(ConnectionString);
+
+            var results = (from d in cntx.DataTypes
+                           join a in cntx.Fields on d.DataTypeId equals a.DataTypeId
+                           where a.DataTypeId == 1
+                           select d).ToList();
+
+            Assert.AreEqual(1, results.Count);
+        }
+
+        [TestMethod]
+        public void MultiJoinWhere()
+        {
+            var cntx = new DataContext(ConnectionString);
+
+            var results = (from d in cntx.DataTypes
+                           join a in cntx.Fields on d.DataTypeId equals a.DataTypeId
+                           join b in cntx.Documents on a.FieldId equals b.FieldId
+                           where a.DataTypeId == 1 && b.FieldId == 1
+                           select d).ToList();
+
+            Assert.AreEqual(1, results.Count);
         }
 
         [TestMethod]
@@ -27,11 +79,11 @@ namespace UnitTest
         {
             using (var cn = new SqlConnection(ConnectionString))
             {
-                var r = (from a in cn.Query<Model.DataType>()
-                        where new[] { "text", "int", "random" }.Contains(a.Name)
-                        orderby a.Name
-                        select a).ToList();
-                    
+                var r = (from a in cn.Query<DataType>()
+                         where new[] { "text", "int", "random" }.Contains(a.Name)
+                         orderby a.Name
+                         select a).ToList();
+
                 Assert.AreEqual(2, r.Count);
             }
         }
@@ -43,7 +95,7 @@ namespace UnitTest
             {
                 foreach (var item in new[] { "text", "int" })
                 {
-                    var results = cn.Query<Model.DataType>(x => x.Name == item).ToList();
+                    var results = cn.Query<DataType>(x => x.Name == item).ToList();
                     Assert.AreEqual(1, results.Count);
                 }
             }
@@ -56,7 +108,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>().FirstOrDefault(m => !m.IsActive);
+                var results = cn.Query<DataType>().FirstOrDefault(m => !m.IsActive);
                 Assert.IsNotNull(results);
             }
         }
@@ -68,7 +120,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>().Take(5).ToList();
+                var results = cn.Query<DataType>().Take(5).ToList();
                 Assert.AreEqual(5, results.Count);
             }
         }
@@ -80,7 +132,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>().Take(topCount).ToList();
+                var results = cn.Query<DataType>().Take(topCount).ToList();
                 Assert.AreEqual(5, results.Count);
             }
         }
@@ -93,7 +145,7 @@ namespace UnitTest
                 cn.Open();
                 for (int topCount = 1; topCount < 5; topCount++)
                 {
-                    var results = cn.Query<Model.DataType>().Take(topCount).ToList();
+                    var results = cn.Query<DataType>().Take(topCount).ToList();
                     Assert.AreEqual(topCount, results.Count);
                 }
             }
@@ -105,7 +157,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>().Distinct().ToList();
+                var results = cn.Query<DataType>().Distinct().ToList();
                 Assert.AreEqual(5, results.Count);
             }
         }
@@ -116,7 +168,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>().OrderBy(m => m.Name).ToList();
+                var results = cn.Query<DataType>().OrderBy(m => m.Name).ToList();
                 Assert.AreEqual(5, results.Count);
             }
         }
@@ -127,7 +179,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>().OrderBy(m => m.Name).ThenBy(m => m.DataTypeId).ToList();
+                var results = cn.Query<DataType>().OrderBy(m => m.Name).ThenBy(m => m.DataTypeId).ToList();
                 Assert.AreEqual(5, results.Count);
             }
         }
@@ -138,7 +190,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>().OrderBy(m => m.Name).ThenBy(m => m.DataTypeId).Take(5).ToList();
+                var results = cn.Query<DataType>().OrderBy(m => m.Name).ThenBy(m => m.DataTypeId).Take(5).ToList();
                 Assert.AreEqual(5, results.Count);
             }
         }
@@ -149,7 +201,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Name == "text").ToList();
+                var results = cn.Query<DataType>(m => m.Name == "text").ToList();
                 Assert.AreEqual(1, results.Count);
                 Assert.AreEqual("text", results[0].Name);
             }
@@ -161,7 +213,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.DataTypeId == m.DataTypeId).ToList();
+                var results = cn.Query<DataType>(m => m.DataTypeId == m.DataTypeId).ToList();
                 Assert.AreEqual(5, results.Count);
             }
         }
@@ -172,7 +224,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => String.IsNullOrEmpty(m.Name)).ToList();
+                var results = cn.Query<DataType>(m => String.IsNullOrEmpty(m.Name)).ToList();
                 Assert.AreEqual(0, results.Count);
             }
         }
@@ -183,7 +235,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => !String.IsNullOrEmpty(m.Name)).ToList();
+                var results = cn.Query<DataType>(m => !String.IsNullOrEmpty(m.Name)).ToList();
                 Assert.AreEqual(5, results.Count);
             }
         }
@@ -194,7 +246,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Created.HasValue).ToList();
+                var results = cn.Query<DataType>(m => m.Created.HasValue).ToList();
                 Assert.AreEqual(5, results.Count);
             }
         }
@@ -205,7 +257,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => !m.Created.HasValue).ToList();
+                var results = cn.Query<DataType>(m => !m.Created.HasValue).ToList();
                 Assert.AreEqual(0, results.Count);
             }
         }
@@ -216,7 +268,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Name.Contains("te")).ToList();
+                var results = cn.Query<DataType>(m => m.Name.Contains("te")).ToList();
                 Assert.AreEqual(2, results.Count);
             }
         }
@@ -227,7 +279,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Name.StartsWith("te")).ToList();
+                var results = cn.Query<DataType>(m => m.Name.StartsWith("te")).ToList();
                 Assert.AreEqual(1, results.Count);
             }
         }
@@ -238,7 +290,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Name.EndsWith("xt")).ToList();
+                var results = cn.Query<DataType>(m => m.Name.EndsWith("xt")).ToList();
                 Assert.AreEqual(1, results.Count);
             }
         }
@@ -249,7 +301,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Name.StartsWith("te", StringComparison.OrdinalIgnoreCase)).ToList();
+                var results = cn.Query<DataType>(m => m.Name.StartsWith("te", StringComparison.OrdinalIgnoreCase)).ToList();
                 Assert.AreEqual(1, results.Count);
             }
         }
@@ -260,7 +312,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Name.EndsWith("xt", StringComparison.OrdinalIgnoreCase)).ToList();
+                var results = cn.Query<DataType>(m => m.Name.EndsWith("xt", StringComparison.OrdinalIgnoreCase)).ToList();
                 Assert.AreEqual(1, results.Count);
             }
         }
@@ -271,7 +323,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => !m.Name.Contains("te")).ToList();
+                var results = cn.Query<DataType>(m => !m.Name.Contains("te")).ToList();
                 Assert.AreEqual(3, results.Count);
             }
         }
@@ -282,7 +334,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => !m.Name.StartsWith("te")).ToList();
+                var results = cn.Query<DataType>(m => !m.Name.StartsWith("te")).ToList();
                 Assert.AreEqual(4, results.Count);
             }
         }
@@ -293,7 +345,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => !m.Name.EndsWith("xt")).ToList();
+                var results = cn.Query<DataType>(m => !m.Name.EndsWith("xt")).ToList();
                 Assert.AreEqual(4, results.Count);
             }
         }
@@ -304,7 +356,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Name == "text" && m.Created.HasValue).ToList();
+                var results = cn.Query<DataType>(m => m.Name == "text" && m.Created.HasValue).ToList();
                 Assert.AreEqual(1, results.Count);
             }
         }
@@ -315,7 +367,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Name == "text" || m.Name == "int").ToList();
+                var results = cn.Query<DataType>(m => m.Name == "text" || m.Name == "int").ToList();
                 Assert.AreEqual(2, results.Count);
             }
         }
@@ -326,7 +378,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Name == "text" && (m.Name == "int" || m.Created.HasValue)).ToList();
+                var results = cn.Query<DataType>(m => m.Name == "text" && (m.Name == "int" || m.Created.HasValue)).ToList();
                 Assert.AreEqual(1, results.Count);
             }
         }
@@ -337,7 +389,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var results = cn.Query<Model.DataType>(m => m.Name != "text" && (m.Name == "int" || m.Created.HasValue)).ToList();
+                var results = cn.Query<DataType>(m => m.Name != "text" && (m.Name == "int" || m.Created.HasValue)).ToList();
                 Assert.AreEqual(4, results.Count);
             }
         }
@@ -348,7 +400,7 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 cn.Open();
-                var result = cn.Query<Model.DataType>().Single(m => m.Name == "text");
+                var result = cn.Query<DataType>().Single(m => m.Name == "text");
                 Assert.AreEqual("text", result.Name);
             }
         }
