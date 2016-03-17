@@ -29,7 +29,6 @@ namespace UnitTest
             var cntx = new DataContext(ConnectionString);
 
             var results = cntx.DataTypes.Where(x => x.Name == "text").ToList();
-
             Assert.AreEqual(1, results.Count);
         }
 
@@ -80,10 +79,17 @@ namespace UnitTest
             using (var cn = new SqlConnection(ConnectionString))
             {
                 var r = (from a in cn.Query<DataType>()
+<<<<<<< HEAD
                          where new[] { "text", "int", "random" }.Contains(a.Name)
                          orderby a.Name
                          select a).ToList();
 
+=======
+                        where new[] { "text", "int", "random" }.Contains(a.Name)
+                        orderby a.Name
+                        select a).ToList();
+                    
+>>>>>>> 34cf3c7824d309860f0fd3becc8e7c4ccb8fe424
                 Assert.AreEqual(2, r.Count);
             }
         }
