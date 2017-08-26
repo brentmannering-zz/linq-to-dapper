@@ -9,11 +9,13 @@ Add the Linq2Dapper Nuget package from nuget.org
 
     install-package Linq2Dapper
 
-###Using the extension methods
+### Using the extension methods
 
 Include the extensions reference in your code
 
+```C#
     using Dapper.Contrib.Linq2Dapper.Extensions
+```
 
 Then choose your flavour; because Linq2Dapper implements `IQueryable<T>` you can use either Linq or lambda queries to achieve clean results
 
@@ -95,7 +97,7 @@ Will produce the following SQL statement
     WHERE ((t2.[DataTypeId] = @ld__1) AND (t3.[FieldId] = @ld__2))
 ```
 
-###Query support
+### Query support
 
 **TOP**
 
