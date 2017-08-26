@@ -3,7 +3,7 @@
 A simple lightweight Linq provider for Dapper.Net
 Light weight Linq support for a light weight ORM. Linq2Dapper allows you to use type-safe Linq queries without the overhead of Linq2SQL or EntityFramework.
 
-##Implementation
+## Implementation
 
 Add the Linq2Dapper Nuget package from nuget.org
 
