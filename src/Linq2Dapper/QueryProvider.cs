@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using Dapper.Contrib.Linq2Dapper.Exceptions;
@@ -64,7 +62,7 @@ namespace Dapper.Contrib.Linq2Dapper
                 if (isEnumerable) return data;
                 return data.ElementAt(0);
             }
-            catch (SqlException ex)
+            catch (InvalidOperationException ex)
             {
                 throw new InvalidQueryException(ex.Message + " | " + _qb.Sql);
             }
