@@ -12,5 +12,7 @@ namespace UnitTests.Models
         public string Name { get; set; }
         public DateTime DeliveredOn { get; set; }
         public bool IsCool { get; set; }
+
+        public static string MyStaticField { get;set;}
     }
 }
