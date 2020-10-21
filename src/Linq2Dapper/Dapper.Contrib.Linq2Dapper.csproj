@@ -6,7 +6,7 @@
     <PackageProjectUrl>https://github.com/brentmannering/linq-to-dapper/</PackageProjectUrl>
     <PackageTags>linq, dapper</PackageTags>
     <Authors>Brent Mannering</Authors>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageVersion>1.0.2</PackageVersion>
     <PackageId>Linq2Dapper</PackageId>
   </PropertyGroup>
 

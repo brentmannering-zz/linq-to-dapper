@@ -11,12 +11,12 @@ namespace Dapper.Contrib.Linq2Dapper
     internal class QueryProvider<TData> : IQueryProvider
     {
         private readonly IDbConnection _connection;
-        private readonly QueryBuilder<TData> _qb; 
+        internal readonly QueryBuilder<TData> QueryBuilder; 
 
         public QueryProvider(IDbConnection connection)
         {
             _connection = connection;
-            _qb = new QueryBuilder<TData>();
+            QueryBuilder = new QueryBuilder<TData>();
         }
 
         public IQueryable CreateQuery(Expression expression)
@@ -56,15 +56,15 @@ namespace Dapper.Contrib.Linq2Dapper
             {
                 if (_connection.State != ConnectionState.Open) _connection.Open();
 
-                _qb.Evaluate(expression);
-                var data = _connection.Query<TData>(_qb.Sql, _qb.Parameters);
+                QueryBuilder.Evaluate(expression);
+                var data = _connection.Query<TData>(QueryBuilder.Sql, QueryBuilder.Parameters);
 
                 if (isEnumerable) return data;
                 return data.ElementAt(0);
             }
             catch (InvalidOperationException ex)
             {
-                throw new InvalidQueryException(ex.Message + " | " + _qb.Sql);
+                throw new InvalidQueryException(ex.Message + " | " + QueryBuilder.Sql);
             }
             finally
             {

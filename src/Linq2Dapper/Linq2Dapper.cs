@@ -53,6 +53,17 @@ namespace Dapper.Contrib.Linq2Dapper
 
         #region Properties
 
+        public string Sql
+        {
+            get
+            {
+                var provider = (QueryProvider<TData>)Provider;
+                provider.QueryBuilder.Evaluate(Expression);
+                return provider.QueryBuilder.Sql;
+            }
+        }
+
+
         public IQueryProvider Provider { get; private set; }
         public IDbConnection Connection { get; private set; }
         public Expression Expression { get; private set; }
