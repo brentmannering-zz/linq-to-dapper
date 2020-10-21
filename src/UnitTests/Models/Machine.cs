@@ -14,5 +14,7 @@ namespace UnitTests.Models
         public bool IsCool { get; set; }
 
         public static string MyStaticField { get;set;}
+        public List<bool> JustAList { get; set; }
+        public bool[] JustAnArray { get; set; }
     }
 }
