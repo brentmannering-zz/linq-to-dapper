@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Dapper.Contrib.Linq2Dapper.Extensions;
 
 namespace Dapper.Contrib.Linq2Dapper.Helpers
 {
@@ -257,7 +258,7 @@ namespace Dapper.Contrib.Linq2Dapper.Helpers
 
             // get properties add to cache
             var properties = new Dictionary<string, string>();
-            type.GetProperties().ToList().ForEach(
+            type.GetProperties().Where(p => !p.IsStatic() && !p.IsList()).ToList().ForEach(
                     x =>
                     {
                         var col = (ColumnAttribute)x.GetCustomAttribute(typeof(ColumnAttribute));

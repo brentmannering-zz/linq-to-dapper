@@ -295,3 +295,4 @@ __pycache__/
 *.xsd.cs
 
 *license.txt
+/src/UnitTests/Resources/test_tmp.db

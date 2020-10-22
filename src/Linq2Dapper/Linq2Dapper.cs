@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -54,6 +52,17 @@ namespace Dapper.Contrib.Linq2Dapper
         #endregion
 
         #region Properties
+
+        public string Sql
+        {
+            get
+            {
+                var provider = (QueryProvider<TData>)Provider;
+                provider.QueryBuilder.Evaluate(Expression);
+                return provider.QueryBuilder.Sql;
+            }
+        }
+
 
         public IQueryProvider Provider { get; private set; }
         public IDbConnection Connection { get; private set; }

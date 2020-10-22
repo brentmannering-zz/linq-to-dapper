@@ -17,5 +17,7 @@ namespace Dapper.Contrib.Linq2Dapper.Extensions
         {
             return await Task.Run(() => new Linq2Dapper<T>(dbConnection, expression: expression));
         }
+
+       
     }
 }
